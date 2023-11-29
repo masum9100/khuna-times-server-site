@@ -27,6 +27,7 @@ async function run() {
     await client.connect();
 
 const newsCollection = client.db('khulnaToday').collection('news')
+const newArticleCollection = client.db('khulnaToday').collection('newarticle')
 
 
 app.get('/news', async(req, res)=>{
@@ -38,6 +39,14 @@ app.get('/news/:id', async(req, res)=>{
     const id  = req.params.id
     const query = {_id: new ObjectId(id)}
     const result = await newsCollection.findOne(query)
+    res.send(result)
+})
+
+// new article 
+
+app.post('/newarticle', async(req, res) =>{
+    const newArticle = req.body
+    const result = await newArticleCollection.insertOne(newArticle)
     res.send(result)
 })
 
