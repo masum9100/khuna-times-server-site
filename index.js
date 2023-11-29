@@ -44,9 +44,23 @@ app.get('/news/:id', async(req, res)=>{
 
 // new article 
 
+app.get('/newarticle', async(req, res)=>{
+    const cursor = newArticleCollection.find()
+    const result = await cursor.toArray()
+    res.send(result)
+})
+
 app.post('/newarticle', async(req, res) =>{
     const newArticle = req.body
+    console.log(newArticle)
     const result = await newArticleCollection.insertOne(newArticle)
+    res.send(result)
+})
+
+app.delete('/newarticle/:id', async(req, res) =>{
+    const id = req.params.id
+    const query = {_id: new ObjectId(id)}
+    const result = await newArticleCollection.deleteOne(query)
     res.send(result)
 })
 
