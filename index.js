@@ -4,6 +4,7 @@ const app = express()
 const port = process.env.PORT || 5001
 require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const query = require('express/lib/middleware/query')
 
 
 app.use(cors())
@@ -45,8 +46,12 @@ app.get('/news/:id', async(req, res)=>{
 // new article 
 
 app.get('/newarticle', async(req, res)=>{
-    const cursor = newArticleCollection.find()
-    const result = await cursor.toArray()
+    console.log(req.query.user_email)
+    let query ={}
+    if (req.query?.user_email){
+        query = {user_email: req.query.user_email}
+    }
+    const result = await newArticleCollection.find(query).toArray()
     res.send(result)
 })
 
@@ -59,7 +64,6 @@ app.get('/newarticle/:id', async(req, res)=>{
 
 app.post('/newarticle', async(req, res) =>{
     const newArticle = req.body
-    console.log(newArticle)
     const result = await newArticleCollection.insertOne(newArticle)
     res.send(result)
 })
