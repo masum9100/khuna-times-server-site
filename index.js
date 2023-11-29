@@ -50,10 +50,39 @@ app.get('/newarticle', async(req, res)=>{
     res.send(result)
 })
 
+app.get('/newarticle/:id', async(req, res)=>{
+    const id = req.params.id
+    const query = {_id: new ObjectId(id)}
+    const result = await newArticleCollection.findOne(query)
+    res.send(result)
+})
+
 app.post('/newarticle', async(req, res) =>{
     const newArticle = req.body
     console.log(newArticle)
     const result = await newArticleCollection.insertOne(newArticle)
+    res.send(result)
+})
+
+app.put('/newarticle/:id', async(req, res) =>{
+    const id = req.params.id
+    const filter = {_id: new ObjectId(id)}
+    const options = {upsert: true}
+    const updateArticle = req.body
+    const article ={
+        $set: {
+            
+            newsTitle: updateArticle.newsTitle,
+            short_description: updateArticle.short_description,
+            long_description: updateArticle.long_description,
+            photo_url1: updateArticle.photo_url1,
+            photo_url2: updateArticle.photo_url2,
+            user_email: updateArticle.user_email,
+            tag: updateArticle.tag,
+          
+        }
+    }
+    const result = await newArticleCollection.updateOne(filter, article, options)
     res.send(result)
 })
 
