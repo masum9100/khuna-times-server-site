@@ -46,7 +46,7 @@ app.get('/news/:id', async(req, res)=>{
 // new article 
 
 app.get('/newarticle', async(req, res)=>{
-    console.log(req.query.user_email)
+    
     let query ={}
     if (req.query?.user_email){
         query = {user_email: req.query.user_email}
