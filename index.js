@@ -29,6 +29,19 @@ async function run() {
 
 const newsCollection = client.db('khulnaToday').collection('news')
 const newArticleCollection = client.db('khulnaToday').collection('newarticle')
+const userCollection = client.db('khulnaToday').collection('users')
+
+
+
+// User Collection 
+
+app.post('/users', async(req, res)=>{
+    const user = req.body
+    const result = await userCollection.insertOne(user)
+    res.send(result)
+})
+
+// News collection 
 
 
 app.get('/news', async(req, res)=>{
